@@ -19,10 +19,10 @@
       <section class="panel setup-panel" id="setupPanel">
         <div class="setup-head">
           <h3>Dados da mesa</h3>
-          <button id="toggleSetupBtn" class="ghost-btn small-btn" type="button" aria-expanded="true" aria-controls="setupBody">Minimizar</button>
+          <button id="toggleSetupBtn" class="ghost-btn small-btn" type="button" aria-expanded="false" aria-controls="setupBody">Expandir</button>
         </div>
 
-        <div id="setupBody" class="setup-body">
+        <div id="setupBody" class="setup-body is-collapsed">
           <div class="setup-inner">
             <div class="field-row">
               <div class="field">
@@ -71,17 +71,6 @@
             <label for="notes">Observações do juiz</label>
             <textarea id="notes" rows="3" placeholder="Ex.: Descoberta imediata, antes do próximo passo do turno."></textarea>
           </div>
-        </div>
-
-        <div class="toggle-row">
-          <label class="checkbox">
-            <input type="checkbox" id="repeat" />
-            <span>É repetição?</span>
-          </label>
-          <label class="checkbox">
-            <input type="checkbox" id="intentional" />
-            <span>Houve intenção / trapaça?</span>
-          </label>
         </div>
 
         <button id="analyzeBtn" class="primary-btn">Analisar infração</button>

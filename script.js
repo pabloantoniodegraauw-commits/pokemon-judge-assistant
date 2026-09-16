@@ -150,8 +150,6 @@ const analyzeBtn = document.querySelector('#analyzeBtn');
 const resultPanel = document.querySelector('#resultPanel');
 const resultModalOverlay = document.querySelector('#resultModalOverlay');
 const closeResultModalBtn = document.querySelector('#closeResultModal');
-const repeatToggle = document.querySelector('#repeat');
-const intentionalToggle = document.querySelector('#intentional');
 const toggleSetupBtn = document.querySelector('#toggleSetupBtn');
 const setupBody = document.querySelector('#setupBody');
 const matchSummary = document.querySelector('#matchSummary');
@@ -343,36 +341,6 @@ function matchRule(text) {
   return candidates[0].item;
 }
 
-function applyEscalation(result) {
-  const isIntentional = intentionalToggle.checked;
-
-  let category = result.category;
-  let severity = result.severity;
-  let level1 = result.levelOne;
-  let level2 = result.levelTwo;
-
-  if (isIntentional) {
-    category = 'Trapaça';
-    severity = 'Gravíssimo';
-    level1 = 'Desqualificação';
-    level2 = 'Desqualificação';
-    return {
-      category,
-      severity,
-      levelOne: level1,
-      levelTwo: level2,
-      fix: 'A situação deve ser tratada como trapaça intencional. O juiz deve considerar desqualificação e a revisão da conduta antiesportiva.',
-      checks: [
-        'Houve intenção clara de vantagem indevida?',
-        'A ação alterou o estado do jogo de maneira decisiva?',
-        'É necessário registrar o caso para revisão de conduta?'
-      ]
-    };
-  }
-
-  return { category, severity, levelOne: level1, levelTwo: level2, fix: result.fix, checks: result.checks };
-}
-
 function renderMatchSummary() {
   const tableName = normalizePlayerName(state.match.tableName, 'Mesa não cadastrada');
   const playerOne = normalizePlayerName(state.match.playerOne, 'Jogador 1');
@@ -506,13 +474,7 @@ function analyze() {
   }
 
   const repetitionCount = getRepetitionCount(involvedPlayer, rule.category);
-  const isRepeat = repeatToggle.checked || repetitionCount > 0;
-
-  if (isRepeat) {
-    repeatToggle.checked = true;
-  }
-
-  const resolved = applyEscalation(rule);
+  const resolved = rule;
 
   resultTitle.textContent = rule.id;
   categoryBadge.textContent = resolved.category;
@@ -532,7 +494,7 @@ function analyze() {
     category: resolved.category,
     severity: resolved.severity,
     levelOne: resolved.levelOne,
-    note: notesInput.value.trim() || `Ocorrência registrada. Repetição: ${repetitionCount + (repeatToggle.checked ? 1 : 0)}`,
+    note: notesInput.value.trim() || `Ocorrência registrada. Repetição: ${repetitionCount}`,
     timestamp: new Date().toISOString()
   });
 }
