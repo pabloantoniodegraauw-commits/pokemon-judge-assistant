@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Assistente de Juiz Pokémon TCG</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260916-design" />
   </head>
   <body>
     <main class="app">
@@ -47,6 +47,7 @@
           rows="5"
           placeholder="Ex.: Jogador comprou 2 cartas no início do turno sem efeito que permitisse..."
         ></textarea>
+        <div id="cardSuggestions" class="card-suggestions" role="listbox" aria-label="Cards de decisão"></div>
 
         <div class="field-row" style="margin-top: 14px;">
           <div class="field">
@@ -112,6 +113,22 @@
         <div class="info-block">
           <h3>Correção</h3>
           <p id="fixText">Descreva a situação para receber a resposta rápida.</p>
+        </div>
+
+        <div class="info-block">
+          <h3>Escalação/Desvio</h3>
+          <p id="escalationText">—</p>
+        </div>
+
+        <div class="info-block">
+          <h3>Observação</h3>
+          <p id="observationText">—</p>
+        </div>
+
+        <div class="info-block">
+          <h3>Card da planilha</h3>
+          <p><strong id="cardReference">—</strong></p>
+          <p id="situationText">—</p>
         </div>
 
         <div class="info-block">
