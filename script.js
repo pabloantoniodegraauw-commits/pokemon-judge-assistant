@@ -515,6 +515,10 @@ function openResultModal() {
 function closeResultModal() {
   resultModalOverlay.classList.remove('is-open');
   document.body.style.overflow = '';
+  incidentInput.value = '';
+  notesInput.value = '';
+  cardSuggestions.classList.remove('is-visible');
+  incidentInput.focus();
 }
 
 analyzeBtn.addEventListener('click', () => {
