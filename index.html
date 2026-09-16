@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assistente de Juiz Pokémon TCG</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div>
+          <p class="eyebrow">Quick reference</p>
+          <h1>Assistente de Juiz</h1>
+        </div>
+        <span class="pill">Pokémon TCG</span>
+      </header>
+
+      <section class="panel setup-panel">
+        <h3>Dados da mesa</h3>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="tableName">Nome da mesa</label>
+            <input id="tableName" type="text" placeholder="Ex.: Mesa 07" />
+          </div>
+        </div>
+
+        <div class="player-grid">
+          <div class="field">
+            <label for="playerOne">Jogador 1</label>
+            <input id="playerOne" type="text" placeholder="Nome do jogador 1" />
+          </div>
+          <div class="field">
+            <label for="playerTwo">Jogador 2</label>
+            <input id="playerTwo" type="text" placeholder="Nome do jogador 2" />
+          </div>
+        </div>
+
+        <button id="saveMatchBtn" class="secondary-btn">Salvar mesa e jogadores</button>
+      </section>
+
+      <section class="panel input-panel">
+        <label for="incident">O que aconteceu?</label>
+        <textarea
+          id="incident"
+          rows="5"
+          placeholder="Ex.: Jogador comprou 2 cartas no início do turno sem efeito que permitisse..."
+        ></textarea>
+
+        <div class="field-row" style="margin-top: 14px;">
+          <div class="field">
+            <label for="playerSelect">Jogador envolvido</label>
+            <select id="playerSelect">
+              <option value="Jogador 1">Jogador 1</option>
+              <option value="Jogador 2">Jogador 2</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row" style="margin-top: 14px;">
+          <div class="field">
+            <label for="notes">Observações do juiz</label>
+            <textarea id="notes" rows="3" placeholder="Ex.: Descoberta imediata, antes do próximo passo do turno."></textarea>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <label class="checkbox">
+            <input type="checkbox" id="repeat" />
+            <span>É repetição?</span>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="intentional" />
+            <span>Houve intenção / trapaça?</span>
+          </label>
+        </div>
+
+        <div class="quick-actions" id="quickActions">
+          <button class="tag" data-text="Jogador comprou 2 cartas sem efeito que permitisse.">Comprar 2 cartas</button>
+          <button class="tag" data-text="Jogador embaralhou o deck depois de usar um apoiador que não mandava embaralhar.">Embaralhar deck sem efeito</button>
+          <button class="tag" data-text="Jogador embaralhou a própria mão no deck sem efeito de carta.">Embaralhar mão no deck</button>
+          <button class="tag" data-text="Jogador chegou atrasado 6 minutos para a partida.">Atraso no procedimento</button>
+          <button class="tag" data-text="Jogo lento e o oponente reclamou da demora.">Jogo lento</button>
+          <button class="tag" data-text="Carta marcada com padrão perceptível.">Cartas marcadas</button>
+        </div>
+
+        <button id="analyzeBtn" class="primary-btn">Analisar infração</button>
+      </section>
+
+      <section class="panel result-panel" id="resultPanel">
+        <div id="matchSummary" class="match-summary">Mesa: não cadastrada • Jogadores: não informados</div>
+
+        <div class="result-header">
+          <span class="badge" id="categoryBadge">Categoria</span>
+          <span class="severity" id="severityBadge">Gravidade</span>
+        </div>
+
+        <h2 id="resultTitle">Aguardando descrição</h2>
+
+        <div class="stats">
+          <div class="stat-box">
+            <span>Nível 1</span>
+            <strong id="levelOne">—</strong>
+          </div>
+          <div class="stat-box">
+            <span>Nível 2</span>
+            <strong id="levelTwo">—</strong>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <h3>Correção</h3>
+          <p id="fixText">Descreva a situação para receber a resposta rápida.</p>
+        </div>
+
+        <div class="info-block">
+          <h3>Verificações</h3>
+          <ul id="checkList"></ul>
+        </div>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="history-head">
+          <h3>Histórico da partida</h3>
+          <button id="exportSummaryBtn" class="secondary-btn small-btn">Exportar resumo</button>
+          <button id="clearHistory" class="ghost-btn">Limpar</button>
+        </div>
+        <ul id="historyList"></ul>
+        <textarea id="exportText" rows="5" placeholder="Resumo da partida..." style="margin-top: 12px; display: none;"></textarea>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
