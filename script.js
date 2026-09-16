@@ -147,9 +147,13 @@ const cardSuggestions = document.querySelector('#cardSuggestions');
 const playerSelect = document.querySelector('#playerSelect');
 const notesInput = document.querySelector('#notes');
 const analyzeBtn = document.querySelector('#analyzeBtn');
+const resultPanel = document.querySelector('#resultPanel');
+const resultModalOverlay = document.querySelector('#resultModalOverlay');
+const closeResultModalBtn = document.querySelector('#closeResultModal');
 const repeatToggle = document.querySelector('#repeat');
 const intentionalToggle = document.querySelector('#intentional');
-const quickTags = document.querySelectorAll('.tag');
+const toggleSetupBtn = document.querySelector('#toggleSetupBtn');
+const setupBody = document.querySelector('#setupBody');
 const matchSummary = document.querySelector('#matchSummary');
 const resultTitle = document.querySelector('#resultTitle');
 const categoryBadge = document.querySelector('#categoryBadge');
@@ -159,9 +163,7 @@ const levelTwo = document.querySelector('#levelTwo');
 const fixText = document.querySelector('#fixText');
 const escalationText = document.querySelector('#escalationText');
 const observationText = document.querySelector('#observationText');
-const cardReference = document.querySelector('#cardReference');
 const situationText = document.querySelector('#situationText');
-const checkList = document.querySelector('#checkList');
 const historyList = document.querySelector('#historyList');
 const exportSummaryBtn = document.querySelector('#exportSummaryBtn');
 const exportText = document.querySelector('#exportText');
@@ -484,9 +486,7 @@ function analyze() {
     fixText.textContent = 'Informe o que aconteceu para receber a análise.';
     escalationText.textContent = '—';
     observationText.textContent = '—';
-    cardReference.textContent = '—';
     situationText.textContent = '—';
-    checkList.innerHTML = '';
     return;
   }
 
@@ -501,9 +501,7 @@ function analyze() {
     fixText.textContent = 'Use a descrição para confirmar a categoria. O sistema pode não ter identificado uma regra exata do documento.';
     escalationText.textContent = '—';
     observationText.textContent = '—';
-    cardReference.textContent = 'Nenhum card identificado';
     situationText.textContent = 'Descreva também quando a ocorrência foi descoberta: antes do evento ou durante a partida.';
-    checkList.innerHTML = '<li>Verifique se há uma forma mais específica de descrever a ação.</li>';
     return;
   }
 
@@ -516,7 +514,7 @@ function analyze() {
 
   const resolved = applyEscalation(rule);
 
-  resultTitle.textContent = `${resolved.category} — ${resolved.severity}`;
+  resultTitle.textContent = rule.id;
   categoryBadge.textContent = resolved.category;
   severityBadge.textContent = resolved.severity;
   levelOne.textContent = resolved.levelOne;
@@ -524,15 +522,7 @@ function analyze() {
   fixText.textContent = resolved.fix;
   escalationText.textContent = rule.raw?.ESCALAÇÃO_DESVIO || '—';
   observationText.textContent = rule.raw?.OBSERVAÇÃO || '—';
-  cardReference.textContent = rule.id;
   situationText.textContent = rule.raw?.SITUAÇÃO || '—';
-
-  checkList.innerHTML = '';
-  resolved.checks.forEach((item) => {
-    const li = document.createElement('li');
-    li.textContent = item;
-    checkList.appendChild(li);
-  });
 
   saveHistory({
     tableName: state.match.tableName,
@@ -549,14 +539,40 @@ function analyze() {
 
 saveMatchBtn.addEventListener('click', saveMatch);
 
-quickTags.forEach((tag) => {
-  tag.addEventListener('click', () => {
-    incidentInput.value = tag.dataset.text || '';
-    incidentInput.focus();
-  });
+toggleSetupBtn.addEventListener('click', () => {
+  const isCollapsed = setupBody.classList.toggle('is-collapsed');
+  toggleSetupBtn.textContent = isCollapsed ? 'Expandir' : 'Minimizar';
+  toggleSetupBtn.setAttribute('aria-expanded', String(!isCollapsed));
 });
 
-analyzeBtn.addEventListener('click', analyze);
+function openResultModal() {
+  resultModalOverlay.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeResultModal() {
+  resultModalOverlay.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+analyzeBtn.addEventListener('click', () => {
+  analyze();
+  openResultModal();
+});
+
+closeResultModalBtn.addEventListener('click', closeResultModal);
+
+resultModalOverlay.addEventListener('click', (event) => {
+  if (event.target === resultModalOverlay) {
+    closeResultModal();
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && resultModalOverlay.classList.contains('is-open')) {
+    closeResultModal();
+  }
+});
 incidentInput.addEventListener('input', renderCardSuggestions);
 incidentInput.addEventListener('focus', renderCardSuggestions);
 incidentInput.addEventListener('blur', () => {
